@@ -1,12 +1,12 @@
 # Waqq.ly - Find Your Freindly Dog Walker App
-Waqq.ly is a cloud-hosted web application on Microsoft Azure designed to connect dog owners with local dog walkers. 
+[Waqq.ly](https://icy-sand-084a52e03.5.azurestaticapps.net/index.html) is a cloud-hosted web application on Microsoft Azure designed to connect dog owners with local dog walkers. 
 
 This GitHub repository contains all necessary code to deploy the prototype, following the steps below.
 
 ## Azure SQL Database
 The backend database is hosted on Microsoft's relational Database as a Service platform Azure SQL Database. Follow the below steps to create the Azure resource and SQL objects.
 
-- Login to the Azure Portal, go to Create a resource and select Azure SQL Database to create a new SQL resource using SQL authentication.
+- Login to the [Azure Portal](https://azure.microsoft.com/en-gb/), go to Create a resource and select Azure SQL Database to create a new SQL resource using SQL authentication.
 - **Basic Configuration:**
   - Select the appropriate subscription.
   - Select an existing resource group or create a new one by clicking 'Create new'.
@@ -25,16 +25,16 @@ The backend database is hosted on Microsoft's relational Database as a Service p
   - Go to the 'Review + create' tab.
   - Click on 'Create' to start the deployment process.
 - **Create SQL Objects:**
-  - After the deployment process is complete, open the 'Query editor', sign in, and run the SQL setup script named "create_db.sql".
+  - After the deployment process is complete, open the 'Query editor', sign in, and run the SQL setup script named ["create_db.sql"](/sql/create_db.sql).
 - **SQL Connection String:**
   - Go to 'Settings > Connection strings' within the database, and copy the 'ODBC' connection string and save for later.
 
 ## Azure Function for API
 The middle layer of the application stack is hosted on Azure Functions. To set up the Azure Function you will need the following installed:
-1. Visual Studio Code (VS Code)
-2. Python 3.10
-3. Python Extension for VS Code
-4. Azure Functions Extension for VS Code
+1. [Visual Studio Code (VS Code)](https://code.visualstudio.com/)
+2. [Python 3.10](https://www.python.org/)
+3. [Python Extension for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+4. [Azure Functions Extension for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions)
 
 - **Create the Azure Function Resource:**
   - Log in to the Azure Portal and navigate to Create a Resource.
@@ -51,7 +51,7 @@ The middle layer of the application stack is hosted on Azure Functions. To set u
   - Access the Azure extension (Shift+Alt+A), and sign in with your Azure account.
   - Right-click the Function App folder named 'api' and select 'Deploy to Function App', then add a new setting named SqlConnectionString with the connection string from the Azure SQL Database.
   - Copy the Function URLs for 'search', 'walker' and 'dog' by right-clicking each and save the links.
-  - In the Web folder of the repository, update 'index.html', 'enterwalker.html' and 'enterdog.html' by replacing the variable string assigned to const funcUrl = with the urls saved from creating the Azure Function App APIs.
+  - In the [Web folder](./web) of the repository, update 'index.html', 'enterwalker.html' and 'enterdog.html' by replacing the variable string assigned to const funcUrl = with the urls saved from creating the Azure Function App APIs.
   - In the Azure Portal, open the Function App and go to 'API > CORS'. Add an asterisk (*) to Allowed Origins and remove any others.
 
 ## Azure Static Web App
@@ -69,8 +69,8 @@ The front end website is hosted on an Azure Static Web App containing HTML, CSS,
   - Choose 'Free' hosting plan.
 - **Configure Deployment:**
   - Select 'GitHub' as the source.
-  - Click 'Sign in with GitHub' and authorise Azure to access your GitHub account.
+  - Click 'Sign in with GitHub' and authorise Azure to access your [GitHub account](https://github.com/).
   - Select the GitHub user under which the repository is located.
   - Select the repository that contains the web pages and the main branch.
-  - Enter ./web as the folder where the web pages are located. Leave API blank.
+  - Enter [./web](./web/) as the folder where the web pages are located. Leave API blank.
   - Click on 'Create' to start the deployment process.
