@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waqq.ly | Enter Dog</title>
+    <link rel="icon" type="image/x-icon" href="images/logo.ico">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <a href="index.html">Search Walkers</a>
+        <a href="enterwalker.html">Enter Walker</a>
+        <a href="enterdog.html" class="active">Enter Dog</a>
+    </div>
+
+    <div class="container main-content">
+        <h1>Enter Your Dog's Details</h1>
+        <form id="dogForm">
+            <div class="form-group">
+                <label for="petName">Pet Name:</label>
+                <input type="text" id="petName" name="petName" required>
+            </div>
+            <div class="form-group">
+                <label for="dateOfBirth">Date of Birth:</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+            </div>
+            <div class="form-group">
+                <label for="breed">Breed:</label>
+                <input type="text" id="breed" name="breed">
+            </div>
+            <div class="form-group">
+                <label for="ownerName">Owner's Name:</label>
+                <input type="text" id="ownerName" name="ownerName" required>
+            </div>
+            <div class="form-group">
+                <label for="ownerEmail">Owner's Email:</label>
+                <input type="email" id="ownerEmail" name="ownerEmail" required pattern=".+@.+\..+"
+                    title="Please enter a valid email address">
+            </div>
+            <button type="submit">Submit Dog Details</button>
+        </form>
+    </div>
+    <div class="container bottom-logo">
+        <img src="images/logo.png" alt="Waqq.ly Logo" width="250" height="250">
+    </div>
+
+    <script>
+        document.getElementById('dogForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            // Define the URL to the Azure Function
+            const funcUrl = 'https://waqqly-api.azurewebsites.net/api/dog?code=Gd4Y9eIM5eaMMY5phXiBq9Mvc7agL2ISK3g6AJMSw92uAzFuiKwYSQ%3D%3D';
+
+            fetch(funcUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (!response.ok) {  // Check if response went through
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.text();  // parse JSON
+                })
+                .then(text => {
+                    console.log('Received raw text:', text);
+                    return JSON.parse(text);  // Manually parse the text to JSON
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    alert('Dog details submitted successfully!');
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Failed to submit dog details.');
+                });
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waqq.ly | Enter Dog Walker</title>
+    <link rel="icon" type="image/x-icon" href="images/logo.ico">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <a href="index.html">Search Walkers</a>
+        <a href="enterwalker.html" class="active">Enter Walker</a>
+        <a href="enterdog.html">Enter Dog</a>
+    </div>
+
+    <div class="container main-content">
+        <h1>Enter Your Dog Walker Details</h1>
+        <form id="walkerForm">
+            <div class="form-group">
+                <label for="forename">Forename:</label>
+                <input type="text" id="forename" name="forename" required>
+            </div>
+            <div class="form-group">
+                <label for="surname">Surname:</label>
+                <input type="text" id="surname" name="surname" required>
+            </div>
+            <div class="form-group">
+                <label for="experienceStartDate">Experience Start Date:</label>
+                <input type="date" id="experienceStartDate" name="experienceStartDate" required>
+            </div>
+            <div class="form-group">
+                <label for="aboutMe">About Me:</label>
+                <textarea id="aboutMe" name="aboutMe" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required pattern=".+@.+\..+"
+                    title="Please enter a valid email address">
+            </div>
+            <div class="form-group">
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" required>
+            </div>
+            <div class="form-group">
+                <label for="postCode">PostCode:</label>
+                <input type="text" id="postCode" name="postCode" required>
+            </div>
+            <button type="submit">Submit Walker Details</button>
+        </form>
+    </div>
+    <div class="container bottom-logo">
+        <img src="images/logo.png" alt="Waqq.ly Logo" width="250" height="250">
+    </div>
+
+    <script>
+        document.getElementById('walkerForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+            const formData = new FormData(event.target);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            // Define the URL to the Azure Function
+            const funcUrl = 'https://waqqly-api.azurewebsites.net/api/walker?code=Gd4Y9eIM5eaMMY5phXiBq9Mvc7agL2ISK3g6AJMSw92uAzFuiKwYSQ%3D%3D';
+
+            fetch(funcUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    // First, check if the response is okay and log it
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok: ' + response.statusText);
+                    }
+                    return response.text();  // Use .text() to see raw response
+                })
+                .then(text => {
+                    console.log('Received raw text:', text);
+                    return JSON.parse(text);  // Manually parse the text to JSON
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    alert('Walker details submitted successfully!');
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Failed to submit walker details.');
+                });
+
+        });
+    </script>
+
+</body>
+
+</html>

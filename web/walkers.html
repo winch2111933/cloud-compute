@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waqq.ly | Dog Walkers in Your Area</title>
+    <link rel="icon" type="image/x-icon" href="images/logo.ico">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="index.html">Search Walkers</a>
+        <a href="enterwalker.html">Enter Walker</a>
+        <a href="enterdog.html">Enter Dog</a>
+    </div>
+
+    <div class="container main-content">
+        <h1>Dog Walkers Near You</h1>
+        <p>Showing results for: <span id="locationDisplay"></span></p>
+
+        <!-- Dynamic walker content will be loaded here -->
+        <div id="walkerList"></div>
+
+    </div>
+
+    <div class="container bottom-logo">
+        <img src="images/logo.png" alt="Waqq.ly Logo" width="250" height="250">
+    </div>
+
+    <script>
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split('&');
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split('=');
+                if (decodeURIComponent(pair[0]) == variable) {
+                    return decodeURIComponent(pair[1]);
+                }
+            }
+            return false;
+        }
+
+        function loadWalkers() {
+            const location = getQueryVariable('location');
+            if (!location) {
+                console.error('No location provided');
+                document.getElementById('locationDisplay').innerText = 'No location provided.';
+                return; // Exit the function if no location is specified
+            }
+            document.getElementById('locationDisplay').innerText = location;
+
+            // Define the URL to the Azure Function
+            const funcUrl = `https://waqqly-api.azurewebsites.net/api/search?code=Gd4Y9eIM5eaMMY5phXiBq9Mvc7agL2ISK3g6AJMSw92uAzFuiKwYSQ%3D%3D&location=${encodeURIComponent(location)}`;
+    
+
+            fetch(funcUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const walkerList = document.getElementById('walkerList');
+                    if (data.length === 0) {
+                        walkerList.innerHTML = '<p>No walkers found for this location.</p>';
+                        return;
+                    }
+                    data.forEach(walker => {
+                        const div = document.createElement('div');
+                        div.className = 'container walker';
+                        div.innerHTML = `<h2>${walker.forename} ${walker.surname}</h2>
+                                 <p>Experience: ${new Date().getFullYear() - new Date(walker.experience_start_date).getFullYear()} years</p>
+                                 <p>Contact: ${walker.email}</p>`;
+                        walkerList.appendChild(div);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading walkers:', error);
+                    document.getElementById('walkerList').innerHTML = '<p>Error loading walkers. Please try again later.</p>';
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadWalkers);
+    </script>
+</body>
+
+</html>

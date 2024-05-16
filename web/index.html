@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waqq.ly | Find a Dog Walker</title>
+    <link rel="icon" type="image/x-icon" href="images/logo.ico">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="index.html">Search Walkers</a>
+        <a href="enterwalker.html">Enter Walker</a>
+        <a href="enterdog.html">Enter Dog</a>
+    </div>
+
+    <div class="container main-content">
+        <img src="images/logo.png" alt="Waqq.ly Logo" width="250" height="250">
+    </div>
+
+    <div class="container">
+        <h1>Find a Dog Walker Near You</h1>
+        <p>Enter your location to find trusted dog walkers in your area.</p>
+        <input type="text" id="locationInput" placeholder="Enter your city or postcode">
+        <button onclick="searchWalkers()">Find Dog Walkers</button>
+    </div>
+    
+    <script>
+        function searchWalkers() {
+            var location = document.getElementById('locationInput').value;
+            window.location.href = 'walkers.html?location=' + encodeURIComponent(location);
+        }
+    </script>
+</body>
+</html>

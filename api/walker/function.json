@@ -1,0 +1,18 @@
+{
+  "bindings": [
+    {
+      "scriptFile": "__init__.py",
+        "authLevel": "function",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": ["post"],
+      "route": "walker"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "$return"
+    }
+  ]
+}
